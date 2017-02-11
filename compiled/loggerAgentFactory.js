@@ -76,7 +76,7 @@ module.exports = function (kafkaService, EventEmitter) {
     handleLog = function handleLog(emitter, message) {
         // console.log(event);
         // console.log(args);
-        console.log('---------------\nLOG\n' + emitter + ':\n' + message + '\n---------------');
+        console.log('\n---------------\nLOG\n' + emitter + ':\n' + message + '\n---------------');
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
