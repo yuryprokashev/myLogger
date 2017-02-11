@@ -56,16 +56,12 @@ module.exports = (kafkaService, EventEmitter) => {
     let loggerAgent;
 
     let handleError,
-        handleLog,
-        packLogMessage,
-        isLogMessage;
+        handleLog;
 
     loggerAgent = new EventEmitter();
 
-    handleError = (event, args) => {
-        console.log(event);
-        console.log(args);
-        // console.log(`---------------\nERROR\n${args.caller.name}:\n${args.message}\n---------------`);
+    handleError = (error) => {
+        console.log(`---------------\nERROR\n${error}\n---------------`);
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
@@ -78,10 +74,10 @@ module.exports = (kafkaService, EventEmitter) => {
 
     };
 
-    handleLog = (event, args) => {
-        console.log(event);
-        console.log(args);
-        // console.log(`---------------\nLOG\n${args.caller.name}:\n${args.message}\n---------------`);
+    handleLog = (emitter, message) => {
+        // console.log(event);
+        // console.log(args);
+        console.log(`---------------\nLOG\n${emitter}:\n${message}\n---------------`);
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
