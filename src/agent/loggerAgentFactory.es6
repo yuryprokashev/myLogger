@@ -63,7 +63,9 @@ module.exports = (kafkaService, EventEmitter) => {
     loggerAgent = new EventEmitter();
 
     handleError = (event, args) => {
-        console.log(`---------------\nERROR\n${args.caller.name}:\n${args.message}\n---------------`);
+        console.log(event);
+        console.log(args);
+        // console.log(`---------------\nERROR\n${args.caller.name}:\n${args.message}\n---------------`);
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
@@ -77,7 +79,9 @@ module.exports = (kafkaService, EventEmitter) => {
     };
 
     handleLog = (event, args) => {
-        console.log(`---------------\nLOG\n${args.caller.name}:\n${args.message}\n---------------`);
+        console.log(event);
+        console.log(args);
+        // console.log(`---------------\nLOG\n${args.caller.name}:\n${args.message}\n---------------`);
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
@@ -89,17 +93,17 @@ module.exports = (kafkaService, EventEmitter) => {
          */
     };
 
-    packLogMessage = (callerFunction, logMessage) => {
-        return {
-            caller: callerFunction,
-            message: logMessage
-        }
-
-    };
-
-    isLogMessage = object => {
-        return object.caller !== undefined && typeof object.caller === 'function' && object.message !== undefined;
-    };
+    // packLogMessage = (callerFunction, logMessage) => {
+    //     return {
+    //         caller: callerFunction,
+    //         message: logMessage
+    //     }
+    //
+    // };
+    //
+    // isLogMessage = object => {
+    //     return object.caller !== undefined && typeof object.caller === 'function' && object.message !== undefined;
+    // };
 
     loggerAgent.listenLoggerEventsIn = componentArray => {
         /**
@@ -114,13 +118,12 @@ module.exports = (kafkaService, EventEmitter) => {
             if(component instanceof EventEmitter) {
                 component.on('logger.agent.error', handleError);
                 component.on('logger.agent.log', handleLog);
-                component.packLogMessage = packLogMessage;
-                component.isLogMessage = isLogMessage;
+                // component.packLogMessage = packLogMessage;
+                // component.isLogMessage = isLogMessage;
             }
             else {
-                let logMessage;
-                logMessage = packLogData(this, `component ${component} is not an instance of EventEmitter class`);
-                loggerAgent.emit('logger.agent.error', logMessage);
+                let error = new Error(`component ${component} is not an instance of EventEmitter class`);
+                loggerAgent.emit('logger.agent.error', error);
             }
         }
     };
