@@ -74,8 +74,6 @@ module.exports = function (kafkaService, EventEmitter) {
     };
 
     handleLog = function handleLog(emitter, message) {
-        // console.log(event);
-        // console.log(args);
         console.log('\n---------------\nLOG\n' + emitter + ':\n' + message + '\n---------------');
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
@@ -87,18 +85,6 @@ module.exports = function (kafkaService, EventEmitter) {
          * - message
          */
     };
-
-    // packLogMessage = (callerFunction, logMessage) => {
-    //     return {
-    //         caller: callerFunction,
-    //         message: logMessage
-    //     }
-    //
-    // };
-    //
-    // isLogMessage = object => {
-    //     return object.caller !== undefined && typeof object.caller === 'function' && object.message !== undefined;
-    // };
 
     loggerAgent.listenLoggerEventsIn = function (componentArray) {
         /**
@@ -120,8 +106,6 @@ module.exports = function (kafkaService, EventEmitter) {
                 if (component instanceof EventEmitter) {
                     component.on('logger.agent.error', handleError);
                     component.on('logger.agent.log', handleLog);
-                    // component.packLogMessage = packLogMessage;
-                    // component.isLogMessage = isLogMessage;
                 } else {
                     var error = new Error('component ' + component + ' is not an instance of EventEmitter class');
                     loggerAgent.emit('logger.agent.error', error);
