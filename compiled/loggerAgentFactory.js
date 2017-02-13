@@ -52,7 +52,7 @@
 
 'use strict';
 
-module.exports = function (kafkaService, EventEmitter) {
+module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
     var loggerAgent = void 0;
 
     var handleError = void 0,
@@ -61,7 +61,7 @@ module.exports = function (kafkaService, EventEmitter) {
     loggerAgent = new EventEmitter();
 
     handleError = function handleError(error) {
-        console.log('\n---------------\nERROR\n' + error.stack + '\n---------------');
+        console.log('\n---------------\nERROR\n' + serviceNameToMonitor + '\n' + error.stack + '\n---------------');
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
@@ -74,7 +74,7 @@ module.exports = function (kafkaService, EventEmitter) {
     };
 
     handleLog = function handleLog(emitter, message) {
-        console.log('\n---------------\nLOG\n' + emitter + ':\n' + message + '\n---------------');
+        console.log('\n---------------\nLOG\n' + serviceNameToMonitor + '\n' + emitter + ':\n' + message + '\n---------------');
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
