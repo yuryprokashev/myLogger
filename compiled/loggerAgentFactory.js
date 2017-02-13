@@ -56,12 +56,31 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
     var loggerAgent = void 0;
 
     var handleError = void 0,
-        handleLog = void 0;
+        handleLog = void 0,
+        packEvent = void 0;
+
+    packEvent = function packEvent(eventData) {
+        var message = {};
+
+        message.occurredAt = new Date().valueOf();
+        message.serviceName = serviceNameToMonitor;
+
+        if (eventData instanceof Error) {
+            message.type = 'error';
+            message.emitter = 'see in stack trace';
+            message.stack = eventData.stack.toString();
+        } else {
+            message.type = 'log';
+            message.emitter = eventData.name;
+            message.stack = eventData.stack;
+        }
+        return message;
+    };
 
     loggerAgent = new EventEmitter();
 
     handleError = function handleError(error) {
-        console.log('\n---------------\nERROR\n' + serviceNameToMonitor + '\n' + error.stack + '\n---------------');
+        // console.log(`\n---------------\nERROR\n${serviceNameToMonitor}\n${error.stack}\n---------------`);
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
@@ -71,10 +90,13 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
          * - callerName,
          * - message
          */
+        var event = packEvent(error);
+
+        kafkaService.send('logger-request', event);
     };
 
     handleLog = function handleLog(emitter, message) {
-        console.log('\n---------------\nLOG\n' + serviceNameToMonitor + '\n' + emitter + ':\n' + message + '\n---------------');
+        // console.log(`\n---------------\nLOG\n${serviceNameToMonitor}\n${emitter}:\n${message}\n---------------`);
         /**
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
@@ -84,6 +106,9 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
          * - callerName,
          * - message
          */
+        var event = packEvent({ name: emitter, stack: message });
+
+        kafkaService.send('logger-request', event);
     };
 
     loggerAgent.listenLoggerEventsIn = function (componentArray) {
@@ -92,8 +117,6 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
          * 1) add logger property to each component in componentArray, that will be Event Emitter.
          * 2) add 'logger.agent.error' event listener to component
          * 3) add 'logger.agent.log' event listener to component
-         * 4) add 'packLogData function to component
-         * 5) add 'isLogMessage' function to component
          */
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
