@@ -5,4 +5,4 @@
 'use strict';
 
 module.exports.loggerAgentFactory = require('./src/agent/loggerAgentFactory.es6');
-module.exports.loggerServer = require('./src/server/loggerCtrlFactory.es6');
+module.exports.loggerCtrlFactory = require('./src/server/loggerCtrlFactory.es6');
