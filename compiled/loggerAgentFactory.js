@@ -133,7 +133,7 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
          * - message
          */
         if (emitter === 'kafkaService') {
-            console.log('\n---------------\nLOG\n' + serviceNameToMonitor + '\n' + emitter + ':\n' + message + '\n---------------');
+            console.log('\n---------------\n' + new Date().toDateString() + 'LOG\n' + serviceNameToMonitor + '\n' + emitter + ':\n' + message + '\n---------------');
         } else {
             var event = packEvent({ name: emitter, stack: message });
 

@@ -19,13 +19,14 @@ module.exports = (kafkaService, EventEmitter) => {
         context = kafkaService.extractContext(kafkaMessage);
 
         console.log(
-            `\n---------------
-            \n${new Date(context.occurredAt).toISOString()}
+            `---------------
+            \n${new Date(context.occurredAt).toDateString()}
             \n${context.serviceName.toUpperCase()}
             \n${context.type.toUpperCase()}
             \n${context.emitter}
             \n${context.stack}
-            \n---------------`)
+            \n---------------
+            \n///////////////`);
     };
 
     loggerCtrl.start = () => {
