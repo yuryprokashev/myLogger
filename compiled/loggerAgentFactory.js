@@ -57,7 +57,12 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
 
     var handleError = void 0,
         handleLog = void 0,
-        packEvent = void 0;
+        packEvent = void 0,
+        logMessageSentCount = void 0;
+
+    setInterval(function () {
+        console.log('messages sent to Kafka ' + logMessageSentCount);
+    }, 500);
 
     packEvent = function packEvent(eventData) {
         var message = {};
@@ -74,6 +79,7 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
             message.emitter = eventData.name;
             message.stack = eventData.stack;
         }
+        logMessageSentCount++;
         return message;
     };
 
