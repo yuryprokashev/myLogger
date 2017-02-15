@@ -134,7 +134,7 @@ module.exports = (serviceNameToMonitor, kafkaService, EventEmitter) => {
          * - callerName,
          * - message
          */
-        if(message.emitter === 'kafkaService') {
+        if(emitter === 'kafkaService') {
             console.log(`\n---------------\nLOG\n${serviceNameToMonitor}\n${emitter}:\n${message}\n---------------`);
         }
         else {
