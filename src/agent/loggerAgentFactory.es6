@@ -64,15 +64,15 @@ module.exports = (serviceNameToMonitor, kafkaService, EventEmitter) => {
     logMessageSentCount = {error: 0, log: 0};
     logMessagesLog = [];
 
-    setInterval(()=>{
-        console.log(`messages sent to Kafka ${JSON.stringify(logMessageSentCount)}`);
-    }, 500);
+    // setInterval(()=>{
+    //     console.log(`messages sent to Kafka ${JSON.stringify(logMessageSentCount)}`);
+    // }, 500);
 
-    setTimeout(()=> {
-        for(let item of logMessagesLog) {
-            console.log(item);
-        }
-    }, 50);
+    // setTimeout(()=> {
+    //     for(let item of logMessagesLog) {
+    //         console.log(item);
+    //     }
+    // }, 50);
 
 
     packEvent = (eventData) => {
