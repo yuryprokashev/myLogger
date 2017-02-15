@@ -20,6 +20,7 @@ module.exports = (kafkaService, EventEmitter) => {
 
         console.log(
             `\n---------------
+            \n${new Date(context.occurredAt).toISOString()}
             \n${context.serviceName.toUpperCase()}
             \n${context.type.toUpperCase()}
             \n${context.emitter}

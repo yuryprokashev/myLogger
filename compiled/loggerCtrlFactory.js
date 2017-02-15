@@ -18,7 +18,7 @@ module.exports = function (kafkaService, EventEmitter) {
 
         context = kafkaService.extractContext(kafkaMessage);
 
-        console.log('\n---------------\n            \n' + context.serviceName.toUpperCase() + '\n            \n' + context.type.toUpperCase() + '\n            \n' + context.emitter + '\n            \n' + context.stack + '\n            \n---------------');
+        console.log('\n---------------\n            \n' + new Date(context.occurredAt).toISOString() + '\n            \n' + context.serviceName.toUpperCase() + '\n            \n' + context.type.toUpperCase() + '\n            \n' + context.emitter + '\n            \n' + context.stack + '\n            \n---------------');
     };
 
     loggerCtrl.start = function () {
