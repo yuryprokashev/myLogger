@@ -60,6 +60,8 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
         packEvent = void 0,
         logMessageSentCount = void 0;
 
+    logMessageSentCount = 0;
+
     setInterval(function () {
         console.log('messages sent to Kafka ' + logMessageSentCount);
     }, 500);
