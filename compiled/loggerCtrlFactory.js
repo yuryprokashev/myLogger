@@ -3,7 +3,7 @@
  */
 'use strict';
 
-module.export = function (kafkaService, EventEmitter) {
+module.exports = function (kafkaService, EventEmitter) {
     var loggerCtrl = new EventEmitter();
     /**
      * 1) listen Kafka 'logger-request' topic -> extract logRecord -> call loggerService.save(logRecordsArray)
