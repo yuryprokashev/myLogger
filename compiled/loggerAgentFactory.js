@@ -58,13 +58,42 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
     var handleError = void 0,
         handleLog = void 0,
         packEvent = void 0,
-        logMessageSentCount = void 0;
+        logMessageSentCount = void 0,
+        logMessagesLog = void 0;
 
     logMessageSentCount = { error: 0, log: 0 };
+    logMessagesLog = [];
 
     setInterval(function () {
         console.log('messages sent to Kafka ' + JSON.stringify(logMessageSentCount));
     }, 500);
+
+    setTimeout(function () {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = logMessagesLog[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var item = _step.value;
+
+                console.log(item);
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+    }, 50);
 
     packEvent = function packEvent(eventData) {
         var message = {};
@@ -82,6 +111,7 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
             message.emitter = eventData.name;
             message.stack = eventData.stack;
             logMessageSentCount.log++;
+            logMessagesLog.push(message);
         }
         return message;
     };
@@ -127,13 +157,13 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
          * 2) add 'logger.agent.error' event listener to component
          * 3) add 'logger.agent.log' event listener to component
          */
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
 
         try {
-            for (var _iterator = componentArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                var component = _step.value;
+            for (var _iterator2 = componentArray[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var component = _step2.value;
 
                 if (component instanceof EventEmitter) {
                     component.on('logger.agent.error', handleError);
@@ -144,16 +174,16 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
                 }
             }
         } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion && _iterator.return) {
-                    _iterator.return();
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                    _iterator2.return();
                 }
             } finally {
-                if (_didIteratorError) {
-                    throw _iteratorError;
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
                 }
             }
         }
