@@ -6,8 +6,11 @@
 module.export = (kafkaService, EventEmitter) => {
     let loggerCtrl = new EventEmitter();
     /**
-     * listen Kafka 'logger' topic
-     * on each kafkaMessage execute handleKafkaMessage
+     * 1) listen Kafka 'logger-request' topic -> extract logRecord -> call loggerService.save(logRecordsArray)
+     * 2) every 1 sec get the <serviceName>.kafka.log file from every kafka lib on
+     *  on success -> extract logRecords from file -> call loggerService.save(logRecordsArray)
+     *  on error -> create logRecord with Error message -> call loggerService.save(logRecordsArray)
+     * 3) each 1 sec get logRecordsArrayUpdate -> printLogRecordToConsole(logRecord)
      */
 
     let handleKafkaMessage = (kafkaMessage) => {

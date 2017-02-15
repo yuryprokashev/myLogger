@@ -137,6 +137,13 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
     handleLog = function handleLog(emitter, message) {
         // console.log(`\n---------------\nLOG\n${serviceNameToMonitor}\n${emitter}:\n${message}\n---------------`);
         /**
+         * DO NOT SEND ANYTHING TO KAFKA, WHEN YOU HAVE LOGMESSAGE FROM KAFKASERVICE!
+         * IT WILL CAUSE INFINITE LOOP.
+         * If you call kafkaService.send() and onProducerSent emits 'log' message, system will end
+         * up in infinite loop.
+         * So all kafkaService 'log' events are not sent to Kafka. They are printed to console
+         * of the service
+         * ------------------------------
          * Call kafkaService to enable aggregated error logs view at one point - loggerServer.
          * send to kafka:
          * - eventName
@@ -145,9 +152,13 @@ module.exports = function (serviceNameToMonitor, kafkaService, EventEmitter) {
          * - callerName,
          * - message
          */
-        var event = packEvent({ name: emitter, stack: message });
+        if (message.emitter === 'kafkaService') {
+            console.log('\n---------------\nLOG\n' + serviceNameToMonitor + '\n' + emitter + ':\n' + message + '\n---------------');
+        } else {
+            var event = packEvent({ name: emitter, stack: message });
 
-        kafkaService.send('logger-request', event);
+            kafkaService.send('logger-request', event);
+        }
     };
 
     loggerAgent.listenLoggerEventsIn = function (componentArray) {
