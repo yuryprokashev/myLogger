@@ -63,7 +63,7 @@ module.exports = (serviceNameToMonitor, kafkaService, EventEmitter) => {
     logMessageSentCount = {error: 0, log: 0};
 
     setInterval(()=>{
-        console.log(`messages sent to Kafka ${logMessageSentCount.toString()}`);
+        console.log(`messages sent to Kafka ${JSON.stringify(logMessageSentCount)}`);
     }, 500);
 
 
